@@ -5,26 +5,8 @@ Train on the toy Balloon dataset and implement color splash effect.
 Copyright (c) 2018 Matterport, Inc.
 Licensed under the MIT License (see LICENSE for details)
 Written by Waleed Abdulla
+Merve TURAN, Mustafa Mert TUNALI
 
-------------------------------------------------------------
-
-Usage: import the module (see Jupyter notebooks for examples), or run from
-       the command line as such:
-
-    # Train a new model starting from pre-trained COCO weights
-    python3 bact.py train --dataset=/path/to/bact/dataset --weights=coco
-
-    # Resume training a model that you had trained earlier
-    python3 bact.py train --dataset=/path/to/bact/dataset --weights=last
-
-    # Train a new model starting from ImageNet weights
-    python3 bact.py train --dataset=/path/to/bact/dataset --weights=imagenet
-
-    # Apply color splash to an image
-    python3 bact.py splash --weights=/path/to/weights/file.h5 --image=<URL or path to file>
-
-    # Apply color splash to video using the last weights you trained
-    python3 bact.py splash --weights=last --video=<URL or path to file>
 """
 
 import os
@@ -69,7 +51,7 @@ class hggConfig(Config):
     IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 1  # Background + balloon
+    NUM_CLASSES = 1 + 1  # Background + HGG
 
     # Number of training steps per epoch
     STEPS_PER_EPOCH = 100
@@ -85,7 +67,7 @@ class hggConfig(Config):
 class hggDataset(utils.Dataset):
 
     def load_hgg(self, dataset_dir, subset):
-        """Load a subset of the Balloon dataset.
+        """Load a subset of the HGG dataset.
         dataset_dir: Root directory of the dataset.
         subset: Subset to load: train or val
         """
@@ -173,7 +155,7 @@ class hggDataset(utils.Dataset):
     def image_reference(self, image_id):
         """Return the path of the image."""
         info = self.image_info[image_id]
-        if info["source"] == "balloon":
+        if info["source"] == "HGG":
             return info["path"]
         else:
             super(self.__class__, self).image_reference(image_id)
@@ -288,8 +270,8 @@ if __name__ == '__main__':
                         metavar="<command>",
                         help="'train' or 'splash'")
     parser.add_argument('--dataset', required=False,
-                        metavar="/path/to/balloon/dataset/",
-                        help='Directory of the Balloon dataset')
+                        metavar="/path/to/HGG/dataset/",
+                        help='Directory of the HGG dataset')
     parser.add_argument('--weights', required=True,
                         metavar="/path/to/weights.h5",
                         help="Path to weights .h5 file or 'coco'")
